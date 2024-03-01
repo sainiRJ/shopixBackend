@@ -12,6 +12,18 @@ exports.getProducts = async (req, res, next) => {
     }
 };
 
+exports.getProduct = async (req, res, next) => {
+    console.log("req body : ", req.body);
+    const productId = req.body._id
+    try {
+        const product = await Product.findById(productId);
+        res.json(product);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+
 exports.addProduct = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

@@ -6,16 +6,20 @@ const cartItemSchema = new mongoose.Schema({
     ref: 'Product', // Reference to the Product model
     required: true
   },
+  title:{
+    type: String,
+    required: true
+  },
   quantity: {
     type: Number,
     required: true
   },
   price: {
-    type: mongoose.Types.Decimal128,
+    type: Number,
     required: true
   },
   subtotal: {
-    type: mongoose.Types.Decimal128,
+    type: Number,
     required: true
   }
 });
@@ -28,7 +32,7 @@ const cartSchema = new mongoose.Schema({
   },
   items: [cartItemSchema],
   total: {
-    type: mongoose.Types.Decimal128,
+    type: Number,
     required: true
   }
 });

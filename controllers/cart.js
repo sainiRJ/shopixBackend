@@ -10,13 +10,15 @@ const User = require('../models/user');
 exports.addToCart= async (req, res) => {
   try {
     const userId = await req.user.user_id
-    console.log("product ", req.body)
     const  productId = req.body._id;
-    const {quantity} = req.body;
+    let {quantity} = req.body;
+    if (!quantity){
+      quantity = 1
+    } 
 
     const user = await User.findById(userId);
-    console.log("return prod " + productId)
     const product = await Product.findById(productId);
+    const title = product.title;
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -27,7 +29,12 @@ exports.addToCart= async (req, res) => {
     }
 
     const price = parseFloat(product.price);
-    const subtotal = price * quantity
+    quantity = parseInt(quantity)
+    console.log("type quantity:", typeof(quantity));
+    console.log("type price:", typeof(price));
+
+    const subtotal = parseFloat(price * quantity)
+  
 
     let cart = await Cart.findOne({ userId });
 
@@ -43,6 +50,7 @@ exports.addToCart= async (req, res) => {
     } else {
       cart.items.push({
         productId,
+        title,
         quantity,
         price,
         subtotal
@@ -70,7 +78,7 @@ exports.getCart= async (req, res) => {
     if (!cart) {
       return res.status(404).json({ message: 'Cart not found' });
     }
-
+    console.log("cart: ", cart);
     res.status(200).json(cart);
   } catch (err) {
     console.error(err);

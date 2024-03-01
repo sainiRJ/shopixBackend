@@ -8,6 +8,7 @@ const upload = require("../multerSetup/upload");
 
 
 router.get('/products', productController.getProducts);
+router.get('/product', productController.getProduct);
 router.post('/add-product',upload.single('image'),authenticateToken,productController.addProduct);
 router.put('/update-product/:productId',authenticateToken,productController.updateProduct);
 router.delete('/delete-product/:productId', authenticateToken,productController.deleteProduct);
